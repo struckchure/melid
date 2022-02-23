@@ -7,6 +7,8 @@ class RouterView(Widget):
     def __init__(self, routes, *args, **kwargs):
         super(RouterView, self).__init__(*args, **kwargs)
 
+        self.routes = routes
+
         # configure router
 
         self.router = QStackedWidget()
@@ -16,11 +18,13 @@ class RouterView(Widget):
 
         self.addRoute(*routes)
 
-        if any(routes):
-            self.setCurrentIndex(1)
+        self.setCurrentIndex(self.router.currentIndex())
 
     def setCurrentIndex(self, index):
         self.router.setCurrentIndex(index)
+
+    def addView(self, name, view):
+        self.router.addWidget(view())
 
     def addRoute(self, *routes):
         """
@@ -40,9 +44,17 @@ class RouterView(Widget):
         """
 
         for route in routes:
-            self.router.addWidget(route["view"])
+            self.addView(**route)
+
+    def navigate(self, name):
+        for index, route in enumerate(self.routes):
+            if route["name"] == name:
+                self.setCurrentIndex(index)
 
 
 class Router(Widget):
+    def __init__(self, *args, **kwargs):
+        super(Router, self).__init__(*args, **kwargs)
+
     def navigate(self, name):
-        pass
+        self.parent().parent().navigate(name)
