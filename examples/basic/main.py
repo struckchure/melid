@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QApplication, QLabel
+from PyQt5.QtWidgets import QApplication, QPushButton
 import sys
 
 from context import melid
@@ -8,16 +8,20 @@ from melid.router.view import Router, RouterView
 
 class IndexPage(Router):
     def __init__(self, *args, **kwargs):
-        super(IndexPage).__init__(*args, **kwargs)
+        super(IndexPage, self).__init__(*args, **kwargs)
 
-        self.addWidget(QLabel("Index Page"))
+        self.label = QPushButton("Index Page")
+        self.label.clicked.connect(lambda _: self.navigate("profile"))
+        self.addWidget(self.label)
 
 
 class ProfilePage(Router):
     def __init__(self, *args, **kwargs):
-        super(ProfilePage).__init__(*args, **kwargs)
+        super(ProfilePage, self).__init__(*args, **kwargs)
 
-        self.addWidget(QLabel("Profile Page"))
+        self.label = QPushButton("Profile Page")
+        self.label.clicked.connect(lambda _: self.navigate("index"))
+        self.addWidget(self.label)
 
 
 class App(Widget):
@@ -26,8 +30,8 @@ class App(Widget):
 
         self.router = RouterView(
             routes=[
-                {"name": "index", "view": IndexPage()},
-                {"name": "profile", "view": ProfilePage()},
+                {"name": "index", "view": IndexPage},
+                {"name": "profile", "view": ProfilePage},
             ]
         )
 
