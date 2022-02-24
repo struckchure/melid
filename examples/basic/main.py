@@ -1,32 +1,31 @@
-from PyQt5.QtWidgets import QApplication, QPushButton
-import sys
+from PyQt5.QtWidgets import QPushButton
 
 from context import melid
-from melid.base.widget import Widget
 from melid.router.view import Router, RouterView
+from melid.app import App
 
 
 class IndexPage(Router):
     def __init__(self, *args, **kwargs):
         super(IndexPage, self).__init__(*args, **kwargs)
 
-        self.label = QPushButton("Index Page")
-        self.label.clicked.connect(lambda _: self.navigate("profile"))
-        self.addWidget(self.label)
+        self.button = QPushButton("Index Page")
+        self.button.clicked.connect(lambda _: self.navigate("profile"))
+        self.addWidget(self.button)
 
 
 class ProfilePage(Router):
     def __init__(self, *args, **kwargs):
         super(ProfilePage, self).__init__(*args, **kwargs)
 
-        self.label = QPushButton("Profile Page")
-        self.label.clicked.connect(lambda _: self.navigate("index"))
-        self.addWidget(self.label)
+        self.button = QPushButton("Profile Page")
+        self.button.clicked.connect(lambda _: self.navigate("index"))
+        self.addWidget(self.button)
 
 
-class App(Widget):
+class Window(App):
     def __init__(self):
-        super(App, self).__init__()
+        super(Window, self).__init__()
 
         self.router = RouterView(
             routes=[
@@ -39,10 +38,8 @@ class App(Widget):
 
 
 def main():
-    app = QApplication(sys.argv)
-    window = App()
-    window.show()
-    app.exec_()
+    window = Window()
+    window.mount()
 
 
 if __name__ == "__main__":
