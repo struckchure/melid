@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 PyQt5 = "*"
 QtAwesome = "*"
+ipython = "*"
+jurigged = "*"
 
 [dev-packages]
 
