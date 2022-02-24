@@ -2,8 +2,12 @@ from PyQt5.QtWidgets import QVBoxLayout, QWidget
 
 
 class Widget(QWidget):
+
+    STYLESHEET_PATH = ""
+    STYLESHEET_TYPE = "CSS"
+
     def __init__(self, *args, **kwargs):
-        super(Widget, self).__init__()
+        super(Widget, self).__init__(*args, **kwargs)
 
         # router layout
 
