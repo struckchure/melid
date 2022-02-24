@@ -4,8 +4,8 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-pyqt5 = "*"
-qtawesome = "*"
+PyQt5 = "*"
+QtAwesome = "*"
 
 [dev-packages]
 
