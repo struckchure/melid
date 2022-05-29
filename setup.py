@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="melid",
-    version="0.0-beta",
+    version="0.1-b",
     author="Dev 47 - Mohammed Al Ameen",
     author_email="ameenmohammed2311@gmail.com",
     description="A PyQt5 desktop application framework with simple and powerful features.",
@@ -20,7 +20,11 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    package_dir={"": "melid"},
-    packages=setuptools.find_packages(where="melid"),
+    packages=setuptools.find_namespace_packages(include=["melid.*"]),
+    namespace_packages=["melid"],
     python_requires=">=3.6",
+    install_requires=[
+        "PyQt5==5.15.6",
+        "QtAwesome==1.1.1",
+    ],
 )

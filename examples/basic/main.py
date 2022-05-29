@@ -1,8 +1,9 @@
 from PyQt5.QtWidgets import QPushButton
 
-from context import melid as _
+import context as _
+
 from melid.router.view import Router, RouterView
-from melid.app import App
+from melid.base.app import App
 
 
 class IndexPage(Router):
