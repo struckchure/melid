@@ -1,7 +1,6 @@
-from PyQt5.QtWidgets import QPushButton
-
 import context as _
 
+from PyQt5.QtWidgets import QPushButton
 from melid.router.view import Router, RouterView
 from melid.base.app import App
 
