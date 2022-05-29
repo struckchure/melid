@@ -1,8 +1,3 @@
-import jurigged
-
-jurigged.watch()
-
-
 class Processor:
 
     STYLESHEET_PATH = None
