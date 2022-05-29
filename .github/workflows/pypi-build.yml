@@ -9,8 +9,9 @@
 name: Upload Python Package
 
 on:
-  branch:
-    name: main
+  push:
+    branches:
+      - master
 
 permissions:
   contents: read
