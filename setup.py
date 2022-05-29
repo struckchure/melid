@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="melid",
-    version="0.1-b",
+    version="0.1-b1",
     author="Dev 47 - Mohammed Al Ameen",
     author_email="ameenmohammed2311@gmail.com",
     description="A PyQt5 desktop application framework with simple and powerful features.",
