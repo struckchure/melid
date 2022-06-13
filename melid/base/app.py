@@ -10,16 +10,10 @@ class App(Widget):
 
     MIN_WIDTH = 500
     MIN_HEIGHT = 500
-    DEFAULT_WINDOW_TITLE = "Welcome to Melid || Made with <3 by Dev 47"
+    TITLE = "Welcome to Melid || Made with ❤ by Dev 47"
 
     def __init__(self, *args, **kwargs):
         super(App, self).__init__(*args, **kwargs)
-
-        self.setDefaults()
-
-    def setDefaults(self):
-        self.setMinimumSize(self.MIN_WIDTH, self.MIN_HEIGHT)
-        self.setWindowTitle(self.DEFAULT_WINDOW_TITLE)
 
     def mount(self, showMaximized=True):
         if showMaximized:

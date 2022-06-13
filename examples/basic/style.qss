@@ -1,0 +1,42 @@
+QWidget#widget {
+  background-color: #3a3a3a;
+}
+
+QGroupBox {
+  border: 1px solid gray;
+  border-radius: 9px;
+  margin: 2em;
+}
+
+QGroupBox::title {
+  subcontrol-origin: margin;
+  subcontrol-position: top center;
+  padding: 3px;
+  background-color: #3a3a3a;
+  color: white;
+}
+
+QPushButton,
+QLineEdit {
+  border: 1px solid #8f8f91;
+  border-radius: 7px;
+  padding: 0.5em 1em;
+  color: white;
+  width: 10%;
+  background-color: #3a3a3a;
+}
+
+QLineEdit {
+  padding: 0.5em;
+}
+
+QPushButton:hover {
+  background: qlineargradient(
+    x1: 0,
+    y1: 0,
+    x2: 0,
+    y2: 1,
+    stop: 0 #343434,
+    stop: 1 #484848
+  );
+}
