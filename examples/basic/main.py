@@ -1,11 +1,9 @@
-from context import BASE_DIR
-
-from PyQt5.QtWidgets import QPushButton, QGroupBox, QVBoxLayout, QLineEdit
-from PyQt5 import QtCore
-from PyQt5 import QtGui
-
-from melid.router.view import Router, RouterView
 from melid.base.app import App
+from melid.router.view import Router, RouterView
+from PyQt5 import QtCore, QtGui
+from PyQt5.QtWidgets import QGroupBox, QLineEdit, QPushButton, QVBoxLayout
+
+from context import BASE_DIR
 
 
 class IndexPage(Router):
@@ -14,7 +12,7 @@ class IndexPage(Router):
     TITLE = "Index Page"
 
     def __init__(self, *args, **kwargs):
-        super(IndexPage, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.button = QPushButton("Login")
         self.button.clicked.connect(lambda _: self.navigate("profile"))
@@ -26,7 +24,6 @@ class IndexPage(Router):
         self.__username = ""
         self.__password = ""
 
-        # add login form
         self.username = QLineEdit()
         self.username.setPlaceholderText("Username")
         self.username.textChanged.connect(
@@ -45,10 +42,10 @@ class IndexPage(Router):
         self.group_box_layout.addWidget(self.button)
 
         self.group_box = QGroupBox("Welcome to Melid")
-        self.group_box.setMaximumWidth(self.width() * 0.5)
+        self.group_box.setMaximumWidth(int(self.width() * 0.5))
         self.group_box.setLayout(self.group_box_layout)
 
-        self.setAlignment(QtCore.Qt.AlignCenter)
+        # self.setAlignment(QtCore.Qt.AlignCenter)
         self.addWidget(self.group_box)
 
     def onTextChanged(self, text, name):

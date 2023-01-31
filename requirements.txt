@@ -1,5 +1,6 @@
 asttokens==2.0.5
 backcall==0.2.0
+black==22.12.0
 blessed==1.19.1
 build==0.7.0
 click==8.0.4
@@ -32,5 +33,6 @@ six==1.16.0
 stack-data==0.2.0
 tomli==2.0.1
 traitlets==5.1.1
-typing-extensions==4.1.1
+typing_extensions==4.1.1
+watchdog==2.1.9
 wcwidth==0.2.5

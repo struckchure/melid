@@ -54,7 +54,7 @@ class RouterView(Widget):
 
 class Router(Widget):
     def __init__(self, *args, **kwargs):
-        super(Router, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def navigate(self, name):
         self.parent().parent().navigate(name)

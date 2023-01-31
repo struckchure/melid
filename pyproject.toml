@@ -1,6 +1,26 @@
 [build-system]
-requires = [
-    "setuptools>=42",
-    "wheel"
-]
+requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "melid"
+version = "0.0.0"
+authors = [
+  { name="Mohammed Al Ameen", email="ameenmohammed2311@gmail.com" },
+]
+description = "Melid"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+]
+dynamic = ["dependencies"]
+
+[project.urls]
+"Homepage" = "https://github.com/struckchure/melid"
+"Bug Tracker" = "https://github.com/struckchure/melid/issues"
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
