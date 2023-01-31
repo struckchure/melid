@@ -1,0 +1,31 @@
+.bg-red {
+  background-color: red;
+}
+
+.px-5 {
+  padding: 0 10px;
+}
+
+.py-5 {
+  padding: 10px;
+}
+
+.mx-5 {
+  margin: 0 10px;
+}
+
+.my-5 {
+  margin: 10px;
+}
+
+.text-md {
+  font-size: 40px;
+}
+
+.text-white {
+  color: white;
+}
+
+.rounded-md {
+  border-radius: 10px;
+}
