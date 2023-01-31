@@ -24,3 +24,17 @@ dynamic = ["dependencies"]
 
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
+
+[tool.poetry]
+name = "melid"
+version = "v1.0.0"
+authors = [
+  "Mohammed Al Ameen <ameenmohammed2311@gmail.com>"
+]
+description = "Melid"
+readme = "README.md"
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+]
