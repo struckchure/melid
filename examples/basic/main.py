@@ -1,4 +1,11 @@
-from PyQt5 import QtCore
+import sys
+from pathlib import Path
+
+BASE_DIR = Path(__file__).parent.parent.parent
+sys.path.append(str(BASE_DIR))
+
+
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QGroupBox, QLineEdit, QPushButton, QVBoxLayout
 
 from melid.base.app import App
@@ -17,23 +24,12 @@ class IndexPage(Router):
         self.button.clicked.connect(lambda _: self.navigate("profile"))
 
         self.group_box_layout = QVBoxLayout()
-        self.group_box_layout.setAlignment(QtCore.Qt.AlignCenter)
-
-        # credentials
-        self.__username = ""
-        self.__password = ""
 
         self.username = QLineEdit()
         self.username.setPlaceholderText("Username")
-        self.username.textChanged.connect(
-            lambda text: self.onTextChanged(text, self.__username)
-        )
 
         self.password = QLineEdit()
         self.password.setPlaceholderText("Password")
-        self.password.textChanged.connect(
-            lambda text: self.onTextChanged(text, self.__password)
-        )
         self.password.setEchoMode(QLineEdit.Password)
 
         self.group_box_layout.addWidget(self.username)
@@ -44,12 +40,8 @@ class IndexPage(Router):
         self.group_box.setMaximumWidth(int(self.width() * 0.5))
         self.group_box.setLayout(self.group_box_layout)
 
-        # self.setAlignment(QtCore.Qt.AlignCenter)
+        self.setAlignment(Qt.AlignCenter)
         self.addWidget(self.group_box)
-
-    def onTextChanged(self, text, name):
-        name = text
-        print(self.__username, self.__password)
 
 
 class ProfilePage(Router):
@@ -66,7 +58,7 @@ class ProfilePage(Router):
 
 class Window(App):
 
-    STYLESHEET_PATH = BASE_DIR.joinpath("examples/basic/style.qss")
+    STYLESHEET_PATH = "./examples/basic/style.qss"
 
     def __init__(self):
         super(Window, self).__init__()

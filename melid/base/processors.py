@@ -5,7 +5,7 @@ class Processor:
     STYLESHEET_TYPE = "CSS"
     STYLESHEET_TYPES = ["CSS"]
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, **kwargs):
         super(Processor, self).__init__()
 
         stylesheet_path = kwargs.get("stylesheet_path")
@@ -35,31 +35,26 @@ class Processor:
     def read_style_sheet(self):
         style = ""
 
-        with open(self.STYLESHEET_PATH, "r") as file:
-            for line in file.readlines():
-                style += self.trim_text(line)
+        if self.STYLESHEET_PATH:
+            with open(self.STYLESHEET_PATH, "r") as file:
+                for line in file.readlines():
+                    # ignore comments
+                    if not line.startswith("/*") and not line.endswith("*/"):
+                        style += line
 
         return style
 
-    def get_style(self, *class_names):
-        __style = ""
+    def get_style(self, class_names: str) -> str:
+        __class_names: list = class_names.split(" ")
 
-        for class_name in class_names:
-            section = self.read_style_sheet().find(class_name)
-            if section > 0:
-                target_section = self.read_style_sheet()[section:]
-                target_start = target_section.find("{") + 2
-                target_end = target_section.find("}") + 1
+        def parse_class_name(class_name: str) -> str:
+            class_block = self.read_style_sheet()[
+                self.read_style_sheet().find(".%s" % class_name) + len(class_name) + 1 :
+            ]
 
-                __style += self.read_style_sheet()[target_start:target_end]
+            starts_at = class_block.find("{") + 1
+            ends_at = class_block.find("}")
 
-        return __style.strip()
+            return self.trim_text(class_block[starts_at:ends_at])
 
-
-def main():
-    pser = Processor(stylesheet_path="examples/basic/style.css")
-    print(pser.get_style("one"))
-
-
-if __name__ == "__main__":
-    main()
+        return "".join(map(parse_class_name, __class_names))
