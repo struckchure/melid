@@ -34,5 +34,4 @@ stack-data==0.2.0
 tomli==2.0.1
 traitlets==5.1.1
 typing_extensions==4.1.1
-watchdog==2.1.9
 wcwidth==0.2.5
