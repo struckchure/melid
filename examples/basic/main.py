@@ -1,9 +1,8 @@
-from melid.base.app import App
-from melid.router.view import Router, RouterView
-from PyQt5 import QtCore, QtGui
+from PyQt5 import QtCore
 from PyQt5.QtWidgets import QGroupBox, QLineEdit, QPushButton, QVBoxLayout
 
-from context import BASE_DIR
+from melid.base.app import App
+from melid.router.view import Router, RouterView
 
 
 class IndexPage(Router):
