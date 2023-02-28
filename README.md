@@ -4,9 +4,10 @@ Melid is a PyQt5 Library for Desktop Applications containing commonly used utils
 
 # Features
 
-- [x] router
-- [ ] store (state management)
-- [ ] hot-reload -> in progress
+- [x] Router
+- [x] State management
+- [x] Data binded widgets (Provider Widget)
+- [ ] Hot-reload
 - [x] CSS Processor (TailwindCSS Syntax)
 
 # Install
@@ -21,6 +22,6 @@ Check the examples folder for usage examples.
 
 ```sh
 $ git clone https://github.com/dev-47/melid.git
-$ cd examples/basic
+$ cd melid/examples/basic
 $ python main.py
 ```
