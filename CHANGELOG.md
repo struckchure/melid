@@ -1,4 +1,19 @@
-## Unreleased
+## v1.0.5 (2023-02-28)
+
+### Feat
+
+- **widget**: adds data binded widget for real time updates
+- **store**: adds state mangement classes
+
+### Fix
+
+- **melid/[base,router]**: deletes base and router folder
+
+## v1,0.4 (2023-02-24)
+
+### Fix
+
+- **pip**: fixes dependency issues
 
 ## v1.0.3 (2023-01-31)
 
