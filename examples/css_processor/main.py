@@ -7,9 +7,9 @@ sys.path.append(str(BASE_DIR))
 
 from PyQt5.QtWidgets import QPushButton
 
-from melid.base.app import App
-from melid.base.processors import Processor
-from melid.router.view import Router, RouterView
+from melid.app import App
+from melid.processors import Processor
+from melid.router import Router, RouterView
 
 
 class ProfilePage(Router):
@@ -19,7 +19,7 @@ class ProfilePage(Router):
     def __init__(self, *args, **kwargs):
         super(ProfilePage, self).__init__(*args, **kwargs)
         pser = Processor(
-            stylesheet_path=BASE_DIR.joinpath("examples/css_processor/style.qss")
+            stylesheet_path=BASE_DIR.joinpath("examples/css_processor/style.css")
         )
 
         self.button = QPushButton("Page Two")
@@ -31,7 +31,7 @@ class ProfilePage(Router):
 
 class Window(App):
 
-    STYLESHEET_PATH = BASE_DIR.joinpath("examples/css_processor/style.qss")
+    STYLESHEET_PATH = BASE_DIR.joinpath("examples/css_processor/style.css")
 
     def __init__(self):
         super(Window, self).__init__()

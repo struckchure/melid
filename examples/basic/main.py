@@ -8,8 +8,8 @@ sys.path.append(str(BASE_DIR))
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QGroupBox, QLineEdit, QPushButton, QVBoxLayout
 
-from melid.base.app import App
-from melid.router.view import Router, RouterView
+from melid.app import App
+from melid.router import Router, RouterView
 
 
 class IndexPage(Router):
@@ -58,7 +58,7 @@ class ProfilePage(Router):
 
 class Window(App):
 
-    STYLESHEET_PATH = "./examples/basic/style.qss"
+    STYLESHEET_PATH = "./examples/basic/style.css"
 
     def __init__(self):
         super(Window, self).__init__()
