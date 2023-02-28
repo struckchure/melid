@@ -21,7 +21,7 @@ $ pip install melid
 Check the examples folder for usage examples.
 
 ```sh
-$ git clone https://github.com/dev-47/melid.git
+$ git clone https://github.com/struckchure/melid.git
 $ cd melid/examples/basic
 $ python main.py
 ```
