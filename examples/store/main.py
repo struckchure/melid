@@ -1,18 +1,17 @@
 import sys
 from pathlib import Path
-from re import X
 
 BASE_DIR = Path(__file__).parent.parent.parent
 sys.path.append(str(BASE_DIR))
 
 
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QGroupBox, QLineEdit, QVBoxLayout
+from PyQt5.QtWidgets import QGroupBox, QVBoxLayout
 
 from melid.app import App
 from melid.router import Router
 from melid.store import Store
-from melid.widget import Button, Text
+from melid.widgets import Button, Text
 
 globalStore = Store(initialState={"count": 1})
 
@@ -25,21 +24,17 @@ class IndexPage(Router):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        def increase_count():
-            globalStore.setState({"count": globalStore.state["count"] + 1})
-            print(globalStore.state["count"])
-
-        def decrease_count():
-            globalStore.setState({"count": globalStore.state["count"] - 1})
-            print(globalStore.state["count"])
-
         self.label = Text(lambda: globalStore.state["count"])
 
         self.increase_button = Button(text="+")
-        self.increase_button.clicked.connect(increase_count)
+        self.increase_button.clicked.connect(
+            lambda: globalStore.setState({"count": globalStore.state["count"] + 1})
+        )
 
         self.reduce_button = Button(text="-")
-        self.reduce_button.clicked.connect(decrease_count)
+        self.reduce_button.clicked.connect(
+            lambda: globalStore.setState({"count": globalStore.state["count"] - 1})
+        )
 
         self.group_box_layout = QVBoxLayout()
 
