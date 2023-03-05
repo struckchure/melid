@@ -1,6 +1,10 @@
 import json
 import typing
 
+from PyQt5.QtCore import QThreadPool
+
+from melid.utils import Worker
+
 
 class Store:
 
@@ -81,3 +85,35 @@ class MemoryStore:
     @property
     def state(self) -> dict:
         return self._readFile()
+
+
+class StatefulWidget:
+    def text(self):
+        raise NotImplementedError
+
+    def setText(self, text: str):
+        raise NotImplementedError
+
+    def updateWidgetData(self, text: str | typing.Callable):
+        try:
+            while True:
+                new_text = self.resolveTextValue(text)
+                if self.text() != new_text:
+                    self.setText(new_text)
+        except RuntimeError as e:
+            """
+            TODO: fix object been deleted while thread is still running
+            """
+
+    def remountWidget(self, text: typing.Any | None = None):
+        self.threadpool = QThreadPool()
+
+        if text:
+            worker = Worker(self.updateWidgetData, text)
+            self.threadpool.start(worker)
+
+    def resolveTextValue(self, text: str | typing.Callable):
+        if isinstance(text, typing.Callable):
+            return str(text())
+        elif isinstance(text, (str, int)):
+            return str(text)
