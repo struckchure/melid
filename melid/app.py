@@ -2,7 +2,7 @@ import sys
 
 from PyQt5.QtWidgets import QApplication
 
-from melid.widget import Widget
+from melid.widgets import Widget
 
 
 class App(Widget):
