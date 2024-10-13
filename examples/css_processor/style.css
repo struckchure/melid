@@ -2,6 +2,10 @@
   background-color: red;
 }
 
+.bg-dark {
+  background-color: #534e4e;
+}
+
 .px-5 {
   padding: 0 10px;
 }

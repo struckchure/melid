@@ -9,7 +9,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QGroupBox, QLineEdit, QPushButton, QVBoxLayout
 
 from melid.app import App
-from melid.router import Router, RouterView
+from melid.router import Router
 
 
 class IndexPage(Router):
@@ -63,7 +63,7 @@ class Window(App):
     def __init__(self):
         super(Window, self).__init__()
 
-        self.router = RouterView(
+        self.router = Router(
             routes=[
                 {"name": "index", "view": IndexPage},
                 {"name": "profile", "view": ProfilePage},

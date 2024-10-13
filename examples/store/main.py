@@ -11,7 +11,7 @@ from PyQt5.QtWidgets import QGroupBox, QVBoxLayout
 from melid.app import App
 from melid.router import Router
 from melid.store import Store
-from melid.widgets import Button, Text
+from melid.widgets import Button, Label
 
 globalStore = Store(initialState={"count": 1})
 
@@ -24,7 +24,7 @@ class IndexPage(Router):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.label = Text(lambda: globalStore.state["count"])
+        self.label = Label(lambda: globalStore.state["count"])
 
         self.increase_button = Button(text="+")
         self.increase_button.clicked.connect(

@@ -1,15 +1,12 @@
-class Processor:
+class CSSProcessor:
 
-    STYLESHEET_PATH = None
+    STYLESHEET_PATH: str
+    STYLESHEET_TYPE: str
 
-    STYLESHEET_TYPE = "CSS"
     STYLESHEET_TYPES = ["CSS"]
 
-    def __init__(self, **kwargs):
-        super(Processor, self).__init__()
-
-        stylesheet_path = kwargs.get("stylesheet_path")
-        stylesheet_type = kwargs.get("stylesheet_type", self.STYLESHEET_TYPE)
+    def __init__(self, stylesheet_path: str, stylesheet_type="CSS"):
+        super(CSSProcessor, self).__init__()
 
         # validate style sheet type (if in STYLESHEET_TYPES)
 
@@ -19,12 +16,8 @@ class Processor:
                 % (stylesheet_type, self.STYLESHEET_TYPES)
             )
 
-        self.STYLESHEET_PATH = (
-            stylesheet_path if stylesheet_path else self.STYLESHEET_PATH
-        )
-        self.STYLESHEET_TYPE = (
-            stylesheet_type if stylesheet_type else self.STYLESHEET_TYPE
-        )
+        self.STYLESHEET_PATH = stylesheet_path
+        self.STYLESHEET_TYPE = stylesheet_type
 
     def trim_text(self, text):
         escapes = "".join([chr(char) for char in range(1, 15)])
@@ -44,17 +37,22 @@ class Processor:
 
         return style
 
-    def get_style(self, class_names: str) -> str:
-        __class_names: list = class_names.split(" ")
+    def get(self, class_names: str = None, style: str = "") -> str:
+        if class_names:
+            __class_names: list = class_names.split(" ")
 
-        def parse_class_name(class_name: str) -> str:
-            class_block = self.read_style_sheet()[
-                self.read_style_sheet().find(".%s" % class_name) + len(class_name) + 1 :
-            ]
+            def parse_class_name(class_name: str) -> str:
+                class_block = self.read_style_sheet()[
+                    self.read_style_sheet().find(".%s" % class_name)
+                    + len(class_name)
+                    + 1 :
+                ]
 
-            starts_at = class_block.find("{") + 1
-            ends_at = class_block.find("}")
+                starts_at = class_block.find("{") + 1
+                ends_at = class_block.find("}")
 
-            return self.trim_text(class_block[starts_at:ends_at])
+                return self.trim_text(class_block[starts_at:ends_at])
 
-        return "".join(map(parse_class_name, __class_names))
+            return "".join(map(parse_class_name, __class_names)) + " " + style
+
+        return style

@@ -8,8 +8,8 @@ sys.path.append(str(BASE_DIR))
 from PyQt5.QtWidgets import QPushButton
 
 from melid.app import App
-from melid.processors import Processor
-from melid.router import Router, RouterView
+from melid.processors import CSSProcessor
+from melid.router import Router
 
 
 class ProfilePage(Router):
@@ -18,13 +18,13 @@ class ProfilePage(Router):
 
     def __init__(self, *args, **kwargs):
         super(ProfilePage, self).__init__(*args, **kwargs)
-        pser = Processor(
+        pser = CSSProcessor(
             stylesheet_path=BASE_DIR.joinpath("examples/css_processor/style.css")
         )
 
         self.button = QPushButton("Page Two")
         self.button.setStyleSheet(
-            pser.get_style("bg-red text-white px-5 py-5 mx-5 text-md rounded-md")
+            pser.get("bg-red text-white px-5 py-5 mx-5 text-md rounded-md")
         )
         self.addWidget(self.button)
 
@@ -36,7 +36,7 @@ class Window(App):
     def __init__(self):
         super(Window, self).__init__()
 
-        self.router = RouterView(
+        self.router = Router(
             routes=[
                 {"name": "profile", "view": ProfilePage},
             ]

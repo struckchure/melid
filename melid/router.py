@@ -1,29 +1,39 @@
 import typing
 
-from PyQt5.QtWidgets import QStackedWidget
+from PyQt5 import QtWidgets
 
-from melid.widgets import Widget
-
-
-class IRoute(typing.TypedDict):
-
-    name: str
-    view: Widget
+from melid.layout import Box
 
 
-class RouterView(Widget):
-    def __init__(self, routes: list[IRoute], *args, **kwargs):
-        super(RouterView, self).__init__(*args, **kwargs)
+class Route(Box):
+    _PATH: str
+    _COMPONENT: str
 
-        self.routes = routes
+    def __init__(self, path: str, component: QtWidgets.QWidget, **kwargs):
+        super().__init__(child=component, **kwargs)
 
-        # configure router
+        self._PATH = path
+        self._COMPONENT = component
 
-        self.router = QStackedWidget()
+    def navigate(self, path: str):
+        Router.navigate(path)
+
+
+class Router(Box):
+    _INSTANCE = None
+    _ROUTE_TREE: typing.Dict[str, int] = {}
+
+    def __new__(cls, *args, **kwargs):
+        if not cls._INSTANCE:
+            cls._INSTANCE = super(Router, cls).__new__(cls, *args, **kwargs)
+        return cls._INSTANCE
+
+    def __init__(self, *routes: Route, **kwargs):
+        super().__init__(**kwargs)
+
+        self.router = QtWidgets.QStackedWidget()
+
         self.addWidget(self.router)
-
-        # add routes
-
         self.addRoute(*routes)
 
         self.setCurrentIndex(self.router.currentIndex())
@@ -31,38 +41,18 @@ class RouterView(Widget):
     def setCurrentIndex(self, index: int):
         self.router.setCurrentIndex(index)
 
-    def addView(self, name: str, view: Widget):
-        self.router.addWidget(view())
+    def addRoute(self, *routes: Route):
+        for idx, route in enumerate(routes):
+            self._ROUTE_TREE[route._PATH] = idx
+            self.router.addWidget(route._COMPONENT)
 
-    def addRoute(self, *routes: IRoute):
-        """
-        `view` key must be a `Router` instance
-        ```
-        addRoute(
-            {
-                "name": "index",
-                "view": IndexPage,
-            },
-            {
-                "name": "profile",
-                "view": ProfilePage,
-            }
-        )
-        ```
-        """
+    @classmethod
+    def navigate(cls, path: str):
+        if not cls._INSTANCE:
+            raise ValueError("Router has not been initialized")
 
-        for route in routes:
-            self.addView(**route)
+        idx = cls._ROUTE_TREE.get(path)
+        if idx is None:
+            raise ValueError("Page not found")
 
-    def navigate(self, name: str):
-        for index, route in enumerate(self.routes):
-            if route["name"] == name:
-                self.setCurrentIndex(index)
-
-
-class Router(Widget):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-    def navigate(self, name):
-        self.parent().parent().navigate(name)
+        cls._INSTANCE.setCurrentIndex(idx)
