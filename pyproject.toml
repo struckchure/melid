@@ -1,42 +1,19 @@
-[build-system]
-requires = ["setuptools>=61.0"]
-build-backend = "setuptools.build_meta"
-
 [project]
 name = "melid"
 version = "1.0.0"
-authors = [
-  { name="Mohammed Al Ameen", email="ameenmohammed2311@gmail.com" },
-]
-description = "Melid"
+description = "Melid is a PyQt5 Library for Desktop Applications containing commonly used utils and advanced widget implementations in very simple forms."
 readme = "README.md"
-requires-python = ">=3.7"
+requires-python = ">=3.10"
+dependencies = ["pyqt5>=5.15.11"]
+authors = [
+  { name = "Mohammed Al-Ameen", email = "ameenmohammed2311@gmail.com" },
+]
 classifiers = [
   "Programming Language :: Python :: 3",
   "License :: OSI Approved :: MIT License",
   "Operating System :: OS Independent",
 ]
-dynamic = ["dependencies"]
 
 [project.urls]
 "Homepage" = "https://github.com/struckchure/melid"
 "Bug Tracker" = "https://github.com/struckchure/melid/issues"
-
-[tool.poetry.dependencies]
-PyQt5 = "==5.15.9"
-PyQt5-Qt5 = "==5.15.2"
-PyQt5-sip = "==12.11.1"
-
-[tool.poetry]
-name = "melid"
-version = "v1.0.0"
-authors = [
-  "Mohammed Al Ameen <ameenmohammed2311@gmail.com>"
-]
-description = "Melid"
-readme = "README.md"
-classifiers = [
-  "Programming Language :: Python :: 3",
-  "License :: OSI Approved :: MIT License",
-  "Operating System :: OS Independent",
-]
