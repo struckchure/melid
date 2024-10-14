@@ -2,9 +2,9 @@ import enum
 import types
 import typing
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets
 
-from melid.store import StatefulWidget
+from melid.store import State
 from melid.types import AppEvents
 
 
@@ -87,20 +87,51 @@ class Widget(QtWidgets.QGroupBox):
     def onWindowResized(self, size: QtCore.QSize):
         pass
 
+    def updateStyleSheet(self, style: str):
+        self.setStyleSheet(self.styleSheet() + "\n%s" % style)
 
-class Label(QtWidgets.QLabel, StatefulWidget):
-    def __init__(self, text: str | typing.Callable, *args, **kwargs):
+    def state(
+        self,
+        state: State,
+        condition: typing.Union[bool, typing.Callable[[], bool]] = True,
+        attribute: str = None,
+        params: typing.Union[typing.List, typing.Dict, typing.Callable] = None,
+    ):
+        def resolve_params(p):
+            if callable(p):
+                return resolve_params(p())
+
+            p1 = p if isinstance(p, list) else []
+            p2 = p if isinstance(p, dict) else {}
+
+            return p1, p2
+
+        def resolve_condition(c):
+            if callable(c):
+                return resolve_condition(c())
+
+            return c
+
+        def on_state_change():
+            p1, p2 = resolve_params(params)
+
+            if resolve_condition(condition) and attribute and hasattr(self, attribute):
+                getattr(self, attribute)(*p1, **p2)
+
+        state.subscribe(on_state_change)
+
+        return self
+
+
+class Label(QtWidgets.QLabel, Widget):
+    def __init__(self, text: str, *args, **kwargs):
         super(Label, self).__init__(*args, **kwargs)
 
         self.setText(text)
         self.setObjectName(self.__class__.__name__)
-        self.remountWidget(text)
-
-    def setText(self, text: str | typing.Callable) -> None:
-        super().setText(self.resolveTextValue(text))
 
 
-class Button(QtWidgets.QPushButton):
+class Button(QtWidgets.QPushButton, Widget):
     def __init__(
         self,
         text: typing.Optional[typing.Union[str, QtWidgets.QWidget]] = "",
@@ -119,6 +150,7 @@ class Button(QtWidgets.QPushButton):
 
         self.setObjectName(self.__class__.__name__)
         self.setStyleSheet(style)
+        self.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
 
 
 class InputType(enum.Enum):
@@ -127,7 +159,7 @@ class InputType(enum.Enum):
     EMAIL = "EMAIL"
 
 
-class Input(QtWidgets.QLineEdit):
+class Input(QtWidgets.QLineEdit, Widget):
     def __init__(
         self,
         input_type: typing.Optional[InputType] = InputType.TEXT,
