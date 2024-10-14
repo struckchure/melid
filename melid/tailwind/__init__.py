@@ -1,14 +1,13 @@
 from typing import Any, Dict, List, Optional
 
 from melid.tailwind.css_ast import (
+    Ast,
     AstNode,
     AtRoot,
     Context,
     Declaration,
     Rule,
     WalkAction,
-    rule,
-    walk,
 )
 from melid.tailwind.utilities import (
     generate_color_utilities,
@@ -36,7 +35,7 @@ class Tailwind:
         self.__initial_ast.extend(self.build_utilities_ast())
 
         # Walk the AST and modify it
-        walk(self.__initial_ast, self.visit_function)
+        Ast.walk(self.__initial_ast, self.visit_function)
 
         self.__utility_map = self.build_utility_map(self.__initial_ast)
 
@@ -56,7 +55,7 @@ class Tailwind:
         )
 
         for class_name, utility in utilities.items():
-            utility_ast.append(rule(class_name, utility["declarations"]))
+            utility_ast.append(Ast.rule(class_name, utility["declarations"]))
 
         return utility_ast
 

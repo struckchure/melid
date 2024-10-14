@@ -1,6 +1,6 @@
 from typing import Any, Dict, List
 
-from melid.tailwind.css_ast import AstNode, decl, rule
+from melid.tailwind.css_ast import Ast, AstNode
 
 
 def generate_ast(utilities: Dict[str, Any]) -> Dict[str, AstNode]:
@@ -17,10 +17,10 @@ def generate_ast(utilities: Dict[str, Any]) -> Dict[str, AstNode]:
 
     for class_name, utility in utilities.items():
         declarations = [
-            decl(declaration["property"], declaration["value"])
+            Ast.decl(declaration["property"], declaration["value"])
             for declaration in utility["declarations"]
         ]
-        rule_node = rule(f".{class_name}", declarations)
+        rule_node = Ast.rule(f".{class_name}", declarations)
         utility_ast[class_name] = rule_node
 
     return utility_ast
@@ -52,9 +52,9 @@ def generate_utilities_with_variants(
 
                 # Clone declarations
                 declarations = [
-                    decl(d.property, d.value, d.important) for d in rule_node.nodes
+                    Ast.decl(d.property, d.value, d.important) for d in rule_node.nodes
                 ]
-                variant_rule_node = rule(variant_class, declarations)
+                variant_rule_node = Ast.rule(variant_class, declarations)
                 extended_ast.append(variant_rule_node)
 
     return extended_ast
@@ -186,32 +186,33 @@ def generate_size_utilities(sizes: Dict[str, str]) -> Dict[str, Any]:
         }
 
         # Border Radius Utilities
+        # TODO: direction combos (top-right, bottom-left, etc)
         utilities[f"rounded-{name}"] = {
-            "declarations": [{"property": "border-width", "value": value}]
-        }
-        utilities[f"rounded-x-{name}"] = {
-            "declarations": [
-                {"property": "padding-left", "value": value},
-                {"property": "padding-right", "value": value},
-            ]
-        }
-        utilities[f"rounded-y-{name}"] = {
-            "declarations": [
-                {"property": "padding-top", "value": value},
-                {"property": "padding-bottom", "value": value},
-            ],
+            "declarations": [{"property": "border-radius", "value": value}]
         }
         utilities[f"rounded-l-{name}"] = {
-            "declarations": [{"property": "border-width-left", "value": value}]
+            "declarations": [
+                {"property": "border-top-left-radius", "value": value},
+                {"property": "border-bottom-left-radius", "value": value},
+            ]
         }
         utilities[f"rounded-r-{name}"] = {
-            "declarations": [{"property": "border-width-right", "value": value}]
+            "declarations": [
+                {"property": "border-top-right-radius", "value": value},
+                {"property": "border-bottom-right-radius", "value": value},
+            ]
         }
         utilities[f"rounded-t-{name}"] = {
-            "declarations": [{"property": "border-width-top", "value": value}]
+            "declarations": [
+                {"property": "border-top-left-radius", "value": value},
+                {"property": "border-top-right-radius", "value": value},
+            ]
         }
         utilities[f"rounded-b-{name}"] = {
-            "declarations": [{"property": "border-width-bottom", "value": value}]
+            "declarations": [
+                {"property": "border-bottom-left-radius", "value": value},
+                {"property": "border-bottom-right-radius", "value": value},
+            ]
         }
 
         # Width and Height Utilities

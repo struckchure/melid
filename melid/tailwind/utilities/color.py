@@ -1,4 +1,5 @@
 COLOR_PALETTE = {
+    "transparent": "transparent",
     "white": "#ffffff",
     "black": "#000000",
     # Gray

@@ -1,21 +1,21 @@
 SIZES = {
     # None or Full
     "none": "0",
-    "full": "100%",
+    "full": "9999px",
     "auto": "auto",
     # Extra Small
-    "xs": "0.125rem",  # 2px
-    "sm": "0.25rem",  # 4px
-    "md": "0.375rem",  # 6px
-    "lg": "0.5rem",  # 8px
-    "xl": "0.75rem",  # 12px
-    "2xl": "1rem",  # 16px
-    "3xl": "1.25rem",  # 20px
-    "4xl": "1.5rem",  # 24px
-    "5xl": "2rem",  # 32px
-    "6xl": "2.5rem",  # 40px
-    "7xl": "3rem",  # 48px
-    "8xl": "4rem",  # 64px
+    "xs": "2px",  # 0.125rem
+    "sm": "4px",  # 0.25rem
+    "md": "6px",  # 0.375rem
+    "lg": "8px",  # 0.5rem
+    "xl": "12px",  # 0.75rem
+    "2xl": "16px",  # 1rem
+    "3xl": "20px",  # 1.25rem
+    "4xl": "24px",  # 1.5rem
+    "5xl": "32px",  # 2rem
+    "6xl": "40px",  # 2.5rem
+    "7xl": "48px",  # 3rem
+    "8xl": "64px",  # 4rem
     # Fractional Sizes
     "1/2": "50%",
     "1/3": "33.3333%",
@@ -46,33 +46,33 @@ SIZES = {
     # Spacing (Padding & Margin)
     "px": "1px",
     "0": "0",
-    "1": "0.25rem",  # 4px
-    "2": "0.5rem",  # 8px
-    "3": "0.75rem",  # 12px
-    "4": "1rem",  # 16px
-    "5": "1.25rem",  # 20px
-    "6": "1.5rem",  # 24px
-    "7": "1.75rem",  # 28px
-    "8": "2rem",  # 32px
-    "9": "2.25rem",  # 36px
-    "10": "2.5rem",  # 40px
-    "11": "2.75rem",  # 44px
-    "12": "3rem",  # 48px
-    "14": "3.5rem",  # 56px
-    "16": "4rem",  # 64px
-    "20": "5rem",  # 80px
-    "24": "6rem",  # 96px
-    "28": "7rem",  # 112px
-    "32": "8rem",  # 128px
-    "36": "9rem",  # 144px
-    "40": "10rem",  # 160px
-    "44": "11rem",  # 176px
-    "48": "12rem",  # 192px
-    "52": "13rem",  # 208px
-    "56": "14rem",  # 224px
-    "60": "15rem",  # 240px
-    "64": "16rem",  # 256px
-    "72": "18rem",  # 288px
-    "80": "20rem",  # 320px
-    "96": "24rem",  # 384px
+    "1": "4px",  # 0.25rem
+    "2": "8px",  # 0.5rem
+    "3": "12px",  # 0.75rem
+    "4": "16px",  # 1rem
+    "5": "20px",  # 1.25rem
+    "6": "24px",  # 1.5rem
+    "7": "28px",  # 1.75rem
+    "8": "32px",  # 2rem
+    "9": "36px",  # 2.25rem
+    "10": "40px",  # 2.5rem
+    "11": "44px",  # 2.75rem
+    "12": "48px",  # 3rem
+    "14": "56px",  # 3.5rem
+    "16": "64px",  # 4rem
+    "20": "80px",  # 5rem
+    "24": "96px",  # 6rem
+    "28": "112px",  # 7rem
+    "32": "128px",  # 8rem
+    "36": "144px",  # 9rem
+    "40": "160px",  # 10rem
+    "44": "176px",  # 11rem
+    "48": "192px",  # 12rem
+    "52": "208px",  # 13rem
+    "56": "224px",  # 14rem
+    "60": "240px",  # 15rem
+    "64": "256px",  # 16rem
+    "72": "288px",  # 18rem
+    "80": "320px",  # 20rem
+    "96": "384px",  # 24rem
 }
