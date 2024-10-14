@@ -105,3 +105,19 @@ if __name__ == "__main__":
       ),
   ).showMaximized().mount()
 ```
+
+# Styling
+
+Melid comes with it's own implementation of tailwind and it is dependency free.
+Due to the default limitations of PyQt5 stylesheet (QSS - CSS2), not all tailwind classes are supported. Also, for layout related styles (flex, grid, etc) and responsive variants, you would have to use melid widgets (`Box`) from that.
+
+```python
+from melid.tailwind import Tailwind
+
+print(
+  Tailwind().tw(
+    "Button",
+    "bg-blue-300 text-black hover:bg-blue-500 rounded-md hover:p-sm ml-sm",
+  )
+)
+```
