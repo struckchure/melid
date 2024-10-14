@@ -6,7 +6,7 @@ on:
       - "v*"
 
 jobs:
-  deploy:
+  publish:
     runs-on: ubuntu-latest
 
     steps:
@@ -24,8 +24,8 @@ jobs:
       - name: Build and publish
         run: |
           export VERSION=$(echo $(git describe --tags --abbrev=0) | sed 's/^v//')
+          sed -i "s/^version = \".*\"/version = \"$VERSION\"/" pyproject.toml
 
-          sed -i '' "s/^version = \".*\"/version = \"$VERSION\"/" pyproject.toml
           uv build
           uv publish --token ${{ secrets.PYPI_API_TOKEN }}
 
