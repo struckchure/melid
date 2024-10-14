@@ -26,19 +26,15 @@ class Box(Widget):
             typing.Union[QtCore.Qt.Alignment, QtCore.Qt.AlignmentFlag]
         ] = QtCore.Qt.AlignmentFlag.AlignTop
         | QtCore.Qt.AlignmentFlag.AlignLeft,
-        size: typing.Optional[Size] = Size(minimum_width=100, minimum_height=50),
+        size: typing.Optional[Size] = None,
         style: typing.Optional[str] = "",
     ):
         super().__init__()
 
-        self.setGap(gap).setDirection(direction.value).setStyleSheet(
-            """
-            QGroupBox {background-color: transparent; border: none; %s}
-            """
-            % style
-        )
+        self.setGap(gap).setDirection(direction.value).setStyleSheet(style)
 
-        size.apply(self)
+        if size:
+            size.apply(self)
 
         if child:
             if isinstance(child, list) and len(child) > 0:

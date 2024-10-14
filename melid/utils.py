@@ -1,36 +1,6 @@
 import typing
 
 from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtCore import QRunnable, pyqtSlot
-
-
-class Worker(QRunnable):
-    """
-    Worker thread
-
-    Inherits from QRunnable to handler worker thread setup, signals and wrap-up.
-
-    :param callback: The function callback to run on this worker thread. Supplied args and
-                     kwargs will be passed through to the runner.
-    :type callback: function
-    :param args: Arguments to pass to the callback function
-    :param kwargs: Keywords to pass to the callback function
-
-    """
-
-    def __init__(self, fn, *args, **kwargs):
-        super(Worker, self).__init__()
-        # Store constructor arguments (re-used for processing)
-        self.fn = fn
-        self.args = args
-        self.kwargs = kwargs
-
-    @pyqtSlot()
-    def run(self):
-        """
-        Initialise the runner function with passed args, kwargs.
-        """
-        self.fn(*self.args, **self.kwargs)
 
 
 class Size:
@@ -81,20 +51,20 @@ class Size:
         vertical_policy = QtWidgets.QSizePolicy.Expanding
 
         # # Determine horizontal policy
-        # if self.fixed_size.width() > 0:
-        #     horizontal_policy = QtWidgets.QSizePolicy.Fixed
-        # elif self.minimum_size.width() == self.maximum_size.width():
-        #     horizontal_policy = QtWidgets.QSizePolicy.Fixed
-        # elif self.maximum_size.width() == QtWidgets.QWIDGETSIZE_MAX:
-        #     horizontal_policy = QtWidgets.QSizePolicy.Expanding
+        if self.fixed_size.width() > 0:
+            horizontal_policy = QtWidgets.QSizePolicy.Fixed
+        elif self.minimum_size.width() == self.maximum_size.width():
+            horizontal_policy = QtWidgets.QSizePolicy.Fixed
+        elif self.maximum_size.width() == QtWidgets.QWIDGETSIZE_MAX:
+            horizontal_policy = QtWidgets.QSizePolicy.Expanding
 
-        # # Determine vertical policy
-        # if self.fixed_size.height() > 0:
-        #     vertical_policy = QtWidgets.QSizePolicy.Fixed
-        # elif self.minimum_size.height() == self.maximum_size.height():
-        #     vertical_policy = QtWidgets.QSizePolicy.Fixed
-        # elif self.maximum_size.height() == QtWidgets.QWIDGETSIZE_MAX:
-        #     vertical_policy = QtWidgets.QSizePolicy.Expanding
+        # Determine vertical policy
+        if self.fixed_size.height() > 0:
+            vertical_policy = QtWidgets.QSizePolicy.Fixed
+        elif self.minimum_size.height() == self.maximum_size.height():
+            vertical_policy = QtWidgets.QSizePolicy.Fixed
+        elif self.maximum_size.height() == QtWidgets.QWIDGETSIZE_MAX:
+            vertical_policy = QtWidgets.QSizePolicy.Expanding
 
         return QtWidgets.QSizePolicy(horizontal_policy, vertical_policy)
 
