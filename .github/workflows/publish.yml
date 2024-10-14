@@ -28,3 +28,8 @@ jobs:
           sed -i '' "s/^version = \".*\"/version = \"$VERSION\"/" pyproject.toml
           uv build
           uv publish --token ${{ secrets.PYPI_API_TOKEN }}
+
+      - uses: ncipollo/release-action@v1
+        with:
+          bodyFile: "CHANGELOG.md"
+          token: ${{ secrets.GITHUB_TOKEN }}
