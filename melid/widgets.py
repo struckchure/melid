@@ -124,11 +124,13 @@ class Widget(QtWidgets.QGroupBox):
 
 
 class Label(QtWidgets.QLabel, Widget):
-    def __init__(self, text: str, *args, **kwargs):
+    def __init__(self, text: str, style: str = "", *args, **kwargs):
         super(Label, self).__init__(*args, **kwargs)
 
-        self.setText(text)
         self.setObjectName(self.__class__.__name__)
+
+        self.setText(text)
+        self.setStyleSheet(style)
 
 
 class Button(QtWidgets.QPushButton, Widget):
