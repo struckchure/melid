@@ -1,4 +1,5 @@
 name: Publish to PyPI
+run-name: Publish to PyPI
 
 on:
   push:
@@ -28,3 +29,39 @@ jobs:
 
           uv build
           uv publish --token ${{ secrets.PYPI_API_TOKEN }}
+
+      - name: Update CHANGELOG
+        id: changelog
+        uses: requarks/changelog-action@v1
+        with:
+          token: ${{ github.token }}
+          tag: ${{ github.ref_name }}
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1.12.0
+        with:
+          allowUpdates: true
+          draft: false
+          makeLatest: true
+          name: ${{ github.ref_name }}
+          body: ${{ steps.changelog.outputs.changes }}
+          token: ${{ github.token }}
+
+      - name: Commit CHANGELOG.md
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          branch: main
+          commit_message: "docs: update CHANGELOG.md for ${{ github.ref_name }} [skip ci]"
+          file_pattern: CHANGELOG.md
+
+      # - name: Create GitHub Release
+      #   env:
+      #     PRERELEASE_FLAG: "${{ fromJson(needs.host.outputs.val).announcement_is_prerelease && '--prerelease' || '' }}"
+      #     ANNOUNCEMENT_TITLE: "${{ fromJson(needs.host.outputs.val).announcement_title }}"
+      #     ANNOUNCEMENT_BODY: "${{ fromJson(needs.host.outputs.val).announcement_github_body }}"
+      #     RELEASE_COMMIT: "${{ github.sha }}"
+      #   run: |
+      #     # Write and read notes from a file to avoid quoting breaking things
+      #     echo "$ANNOUNCEMENT_BODY" > $RUNNER_TEMP/notes.txt
+
+      #     gh release create "${{ needs.plan.outputs.tag }}" --target "$RELEASE_COMMIT" $PRERELEASE_FLAG --title "$ANNOUNCEMENT_TITLE" --notes-file "$RUNNER_TEMP/notes.txt" artifacts/*
