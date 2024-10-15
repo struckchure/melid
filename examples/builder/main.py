@@ -12,10 +12,11 @@ from melid.app import CreateApp
 from melid.layout import Box, Direction
 from melid.router import Route, Router
 from melid.store import State
-from melid.tailwind import Tailwind
+from melid.tailwind import Tailwind, TailwindConfig
 from melid.widgets import Button, Input, InputType, Label
 
-tw = Tailwind().tw
+tw_cfg = TailwindConfig().extend(colors={"primary": "gold"})
+tw = Tailwind(tw_cfg).tw
 
 
 def HomePage():
@@ -72,7 +73,13 @@ def LoginPage():
     return Box(
         Box(
             [
-                Label(update_title()[0])
+                Label(
+                    update_title()[0],
+                    style=tw(
+                        "Label",
+                        "p-2 rounded-none text-black bg-primary",
+                    ),
+                )
                 .state(username, lambda: True, "setText", update_title)
                 .state(password, lambda: True, "setText", update_title),
                 Input(
