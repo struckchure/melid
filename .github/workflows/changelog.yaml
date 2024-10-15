@@ -1,6 +1,9 @@
 name: Latest Changes
 
 on:
+  workflow_run:
+    workflows: ["Publish to PyPI"]
+    types: [completed]
   pull_request_target:
     branches:
       - main
@@ -24,3 +27,18 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           latest_changes_file: "CHANGELOG.md"
           latest_changes_header: "# Release Notes"
+
+      - uses: actions-ecosystem/action-get-latest-tag@v1
+        id: get-latest-tag
+        with:
+          semver_only: true
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1.12.0
+        with:
+          allowUpdates: true
+          draft: true
+          makeLatest: true
+          name: ${{ steps.get-latest-tag.outputs.tag }}
+          bodyFile: "CHANGELOG.md"
+          token: ${{ secrets.GITHUB_TOKEN }}
