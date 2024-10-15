@@ -1,5 +1,10 @@
+from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional
 
+from melid.tailwind.color import generate_color_utilities
+from melid.tailwind.configs.color import COLORS
+from melid.tailwind.configs.size import SIZES
+from melid.tailwind.configs.variants import VARIANTS
 from melid.tailwind.css_ast import (
     Ast,
     AstNode,
@@ -9,14 +14,56 @@ from melid.tailwind.css_ast import (
     Rule,
     WalkAction,
 )
-from melid.tailwind.utilities import (
-    generate_color_utilities,
-    generate_size_utilities,
-    generate_utilities_with_variants,
-)
-from melid.tailwind.utilities.color import COLOR_PALETTE
-from melid.tailwind.utilities.size import SIZES
-from melid.tailwind.utilities.variants import VARIANTS
+from melid.tailwind.size import generate_size_utilities
+from melid.tailwind.utils import generate_utilities_with_variants
+
+
+@dataclass
+class TailwindConfig:
+    colors: Dict[str, str] = field(default_factory=lambda: COLORS)
+    sizes: Dict[str, str] = field(default_factory=lambda: SIZES)
+    variants: Dict[str, Dict[str, str]] = field(default_factory=lambda: VARIANTS)
+
+    def __build_utilities_ast(self) -> List[AstNode]:
+        """Generate AST nodes for the additional utilities."""
+        utilities = {}
+
+        utility_ast = []
+        utility_ast.extend(
+            generate_utilities_with_variants(
+                {
+                    **generate_color_utilities(self.colors),
+                    **generate_size_utilities(self.sizes),
+                },
+                self.variants,
+            )
+        )
+
+        for class_name, utility in utilities.items():
+            utility_ast.append(Ast.rule(class_name, utility["declarations"]))
+
+        return utility_ast
+
+    @property
+    def utilities(self):
+        return self.__build_utilities_ast()
+
+    def extend(
+        self,
+        colors: Dict[str, str] = None,
+        sizes: Dict[str, str] = None,
+        variants: Dict[str, Dict[str, str]] = None,
+    ):
+        if colors:
+            self.colors.update(colors)
+
+        if sizes:
+            self.sizes.update(sizes)
+
+        if variants:
+            self.variants.update(variants)
+
+        return self
 
 
 class Tailwind:
@@ -25,39 +72,27 @@ class Tailwind:
     # Build the main AST
     __initial_ast: List[AstNode] = []
 
+    _initialized = False  # Flag to track if __init__ has already been executed
+
     def __new__(cls, *args, **kwargs):
-        if not cls._INSTANCE:
-            cls._INSTANCE = super(Tailwind, cls).__new__(cls, *args, **kwargs)
+        if cls._INSTANCE is None:
+            cls._INSTANCE = super().__new__(cls)
         return cls._INSTANCE
 
-    def __init__(self, ast: List[AstNode] = []):
-        self.__initial_ast.extend(ast)
-        self.__initial_ast.extend(self.build_utilities_ast())
+    def __init__(self, config: Optional[TailwindConfig] = None):
+        if not self._initialized:
+            self._initialized = True  # Ensure this is only done once
 
-        # Walk the AST and modify it
-        Ast.walk(self.__initial_ast, self.visit_function)
+            # Handle the config to avoid mutable default argument issues
+            if config is None:
+                config = TailwindConfig()
 
-        self.__utility_map = self.build_utility_map(self.__initial_ast)
+            self.__initial_ast.extend(config.utilities)
 
-    def build_utilities_ast(self) -> List[AstNode]:
-        """Generate AST nodes for the additional utilities."""
-        utilities = {}
-        utilities.update()
+            # Walk the AST and modify it
+            Ast.walk(self.__initial_ast, self.visit_function)
 
-        utility_ast = []
-        utility_ast.extend(
-            generate_utilities_with_variants(
-                generate_color_utilities(COLOR_PALETTE), VARIANTS
-            )
-        )
-        utility_ast.extend(
-            generate_utilities_with_variants(generate_size_utilities(SIZES), VARIANTS)
-        )
-
-        for class_name, utility in utilities.items():
-            utility_ast.append(Ast.rule(class_name, utility["declarations"]))
-
-        return utility_ast
+            self.__utility_map = self.build_utility_map(self.__initial_ast)
 
     def visit_function(
         self, node: AstNode, utils: Dict[str, Any]
