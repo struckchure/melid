@@ -24,14 +24,3 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           latest_changes_file: "CHANGELOG.md"
           latest_changes_header: "# Release Notes"
-
-      - name: Create Release
-        uses: ncipollo/release-action@v1.12.0
-        with:
-          allowUpdates: true
-          draft: true
-          makeLatest: true
-          name: ${{ github.ref_name }}
-          body: ${{ steps.changelog.outputs.changes }}
-          bodyFile: "CHANGELOG.md"
-          token: ${{ secrets.GITHUB_TOKEN }}
