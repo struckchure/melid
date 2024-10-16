@@ -13,7 +13,7 @@ from melid.layout import Box, Direction
 from melid.router import Route, Router
 from melid.store import State
 from melid.tailwind import Tailwind, TailwindConfig
-from melid.widgets import Button, Input, InputType, Label
+from melid.widgets import Button, Input, InputType, Label, Option, Select
 
 tw_cfg = TailwindConfig().extend(colors={"primary": "gold"})
 tw = Tailwind(tw_cfg).tw
@@ -73,6 +73,12 @@ def LoginPage():
     return Box(
         Box(
             [
+                Select(
+                    [Option("Python", 1), Option("Go", 2), Option("TypeScript", 3)],
+                    on_change=print,
+                    style=tw("Select", "rounded-0 p-2 bg-gray-900")
+                    + tw("Select QAbstractItemView", "px-2 w-full"),
+                ),
                 Label(
                     update_title()[0],
                     style=tw(
