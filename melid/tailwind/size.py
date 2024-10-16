@@ -72,27 +72,27 @@ def generate_size_utilities(sizes: Dict[str, str]) -> Dict[str, Any]:
         }
         utilities[f"border-x-{name}"] = {
             "declarations": [
-                {"property": "border-width-left", "value": value},
-                {"property": "border-width-right", "value": value},
+                {"property": "border-left-width", "value": value},
+                {"property": "border-right-width", "value": value},
             ]
         }
         utilities[f"border-y-{name}"] = {
             "declarations": [
-                {"property": "border-width-top", "value": value},
-                {"property": "border-width-bottom", "value": value},
+                {"property": "border-top-width", "value": value},
+                {"property": "border-bottom-width", "value": value},
             ],
         }
         utilities[f"border-l-{name}"] = {
-            "declarations": [{"property": "border-width-left", "value": value}]
+            "declarations": [{"property": "border-left-width", "value": value}]
         }
         utilities[f"border-r-{name}"] = {
-            "declarations": [{"property": "border-width-right", "value": value}]
+            "declarations": [{"property": "border-right-width", "value": value}]
         }
         utilities[f"border-t-{name}"] = {
-            "declarations": [{"property": "border-width-top", "value": value}]
+            "declarations": [{"property": "border-top-width", "value": value}]
         }
         utilities[f"border-b-{name}"] = {
-            "declarations": [{"property": "border-width-bottom", "value": value}]
+            "declarations": [{"property": "border-bottom-width", "value": value}]
         }
 
         # Border Radius Utilities
