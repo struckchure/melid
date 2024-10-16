@@ -1,14 +1,15 @@
 import enum
 import types
 import typing
+from dataclasses import dataclass
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-from melid.store import State
+from melid.store import StatefulWidget
 from melid.types import AppEvents
 
 
-class Widget(QtWidgets.QGroupBox):
+class Widget(QtWidgets.QGroupBox, StatefulWidget):
 
     STYLESHEET_PATH = ""
     STYLESHEET_TYPE = "CSS"
@@ -19,8 +20,8 @@ class Widget(QtWidgets.QGroupBox):
     ):
         super().__init__()
 
-        if qt_window_resized:
-            qt_window_resized.connect(self.onWindowResized)
+        # if qt_window_resized:
+        #     qt_window_resized.connect(self.onWindowResized)
 
         self.setObjectName(self.__class__.__name__)
         self.setContentsMargins(0, 0, 0, 0)
@@ -90,38 +91,6 @@ class Widget(QtWidgets.QGroupBox):
     def updateStyleSheet(self, style: str):
         self.setStyleSheet(self.styleSheet() + "\n%s" % style)
 
-    def state(
-        self,
-        state: State,
-        condition: typing.Union[bool, typing.Callable[[], bool]] = True,
-        attribute: str = None,
-        params: typing.Union[typing.List, typing.Dict, typing.Callable] = None,
-    ):
-        def resolve_params(p):
-            if callable(p):
-                return resolve_params(p())
-
-            p1 = p if isinstance(p, list) else []
-            p2 = p if isinstance(p, dict) else {}
-
-            return p1, p2
-
-        def resolve_condition(c):
-            if callable(c):
-                return resolve_condition(c())
-
-            return c
-
-        def on_state_change():
-            p1, p2 = resolve_params(params)
-
-            if resolve_condition(condition) and attribute and hasattr(self, attribute):
-                getattr(self, attribute)(*p1, **p2)
-
-        state.subscribe(on_state_change)
-
-        return self
-
 
 class Label(QtWidgets.QLabel, Widget):
     def __init__(self, text: str, style: str = "", *args, **kwargs):
@@ -136,7 +105,7 @@ class Label(QtWidgets.QLabel, Widget):
 class Button(QtWidgets.QPushButton, Widget):
     def __init__(
         self,
-        text: typing.Optional[typing.Union[str, QtWidgets.QWidget]] = "",
+        child: typing.Optional[typing.Union[str, QtWidgets.QWidget, QtGui.QIcon]] = "",
         on_click: typing.Optional[types.FunctionType] = None,
         style: typing.Optional[str] = "",
         *args,
@@ -144,13 +113,17 @@ class Button(QtWidgets.QPushButton, Widget):
     ):
         super(Button, self).__init__(*args, **kwargs)
 
-        if isinstance(text, str):
-            self.setText(text)
+        self.setObjectName(self.__class__.__name__)
+
+        if child:
+            if isinstance(child, str):
+                self.setText(child)
+            if isinstance(child, QtGui.QIcon):
+                self.setIcon(child)
 
         if on_click:
             self.clicked.connect(lambda: on_click())
 
-        self.setObjectName(self.__class__.__name__)
         self.setStyleSheet(style)
         self.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
 
@@ -182,8 +155,87 @@ class Input(QtWidgets.QLineEdit, Widget):
 
         self.setObjectName(self.__class__.__name__)
         self.setStyleSheet(style)
-        self.setSizePolicy(
-            QtWidgets.QSizePolicy(
-                QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding
-            )
+
+
+class TextArea(QtWidgets.QTextEdit, Widget):
+    def __init__(
+        self,
+        on_change: typing.Optional[typing.Callable] = None,
+        style: typing.Optional[str] = "",
+    ):
+        super().__init__()
+
+        if on_change:
+            self.textChanged.connect(on_change)
+
+        self.setObjectName(self.__class__.__name__)
+        self.setStyleSheet(style)
+
+
+@dataclass
+class Option:
+    label: str
+    value: typing.Any
+
+
+class Select(QtWidgets.QComboBox, Widget):
+    def __init__(
+        self,
+        options: typing.Optional[typing.List[Option]] = None,
+        on_change: typing.Optional[typing.Callable] = None,
+        style: typing.Optional[str] = "",
+    ):
+        super().__init__()
+
+        if options:
+            self.addItems(list(map(lambda x: x.label, options)))
+
+        if on_change:
+            self.activated.connect(lambda idx: on_change(options[idx].value))
+
+        # Set placeholder text for the combo box
+        self.setEditable(True)
+        self.lineEdit().setPlaceholderText("Select an option...")
+        self.lineEdit().setAlignment(QtCore.Qt.AlignCenter)
+        self.setEditable(False)  # Disable edit after setting placeholder
+
+        # Set custom background color and styling using CSS
+        # self.setStyleSheet(
+        #     """
+        #         QComboBox {
+        #             background-color: #EFEFEF;
+        #             border: 1px solid #AFAFAF;
+        #             padding: 5px;
+        #             border-radius: 5px;
+        #         }
+        #         QComboBox::drop-down {
+        #             subcontrol-origin: padding;
+        #             subcontrol-position: top right;
+        #             width: 20px;
+        #             border-left-width: 1px;
+        #             border-left-color: darkgray;
+        #             border-left-style: solid; /* Just a single line */
+        #             border-top-right-radius: 3px; /* same radius as the QComboBox */
+        #             border-bottom-right-radius: 3px;
+        #         }
+        #         QComboBox::down-arrow {
+        #             image: url(icons/down_arrow.png);  /* Custom down-arrow icon */
+        #         }
+        #         QComboBox QAbstractItemView {
+        #             background-color: white;
+        #             selection-background-color: lightgray;
+        #             selection-color: black;
+        #         }
+        #     """
+        # )
+        self.setStyleSheet(
+            style
+            + """
+            Select::drop-down {
+                subcontrol-origin: padding;
+                subcontrol-position: top right;
+                width: 5px;
+                padding: 5px;
+            }
+            """
         )
