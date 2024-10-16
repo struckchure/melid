@@ -26,12 +26,12 @@ class IndexPage(Router):
 
         self.label = Label(lambda: globalStore.state["count"])
 
-        self.increase_button = Button(text="+")
+        self.increase_button = Button(child="+")
         self.increase_button.clicked.connect(
             lambda: globalStore.setState({"count": globalStore.state["count"] + 1})
         )
 
-        self.reduce_button = Button(text="-")
+        self.reduce_button = Button(child="-")
         self.reduce_button.clicked.connect(
             lambda: globalStore.setState({"count": globalStore.state["count"] - 1})
         )
