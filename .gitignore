@@ -12,3 +12,5 @@ venv
 .venv
 melid.*
 dist
+
+.DS_Store
